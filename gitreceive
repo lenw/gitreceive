@@ -31,7 +31,7 @@ EOF
 
   upload-key) # gitreceive upload-key <username>
     KEY=$(cat)
-    FINGERPRINT=$(ssh-keygen -lf /dev/stdin <<< $(echo $KEY) | awk '{print $2}')
+    FINGERPRINT=$(R=/tmp/$RANDOM echo $KEY >  $R; ssh-keygen -lf $R | awk '{print $2}')
     AUTHORIZED_KEYS=$GITHOME/.ssh/authorized_keys
     KEY_PREFIX="command=\"$SELF run $2 $FINGERPRINT\",no-agent-forwarding,no-pty,no-user-rc,no-X11-forwarding,no-port-forwarding"
     echo "$KEY_PREFIX $KEY" >> $AUTHORIZED_KEYS
